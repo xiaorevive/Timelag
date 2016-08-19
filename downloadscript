@@ -1,0 +1,4 @@
+wget - c ftp://heasarc.gsfc.nasa.gov/xte/data/archive/AO9/P90058/90058-11-03-00.tar
+wget - c ftp://heasarc.gsfc.nasa.gov/xte/data/archive/AO9/P90058/90058-16-05-00.tar
+wget - c ftp://heasarc.gsfc.nasa.gov/xte/data/archive/AO9/P90058/90058-16-07-00.tar
+

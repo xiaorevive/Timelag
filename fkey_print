@@ -1,0 +1,2 @@
+fkeyprint  B_8ms_C0-13_80135-02-01-01SA.lc DATE-OBS | sed -n "6p" >>  lc_obs_information
+
