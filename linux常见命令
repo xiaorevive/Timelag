@@ -1,0 +1,2 @@
+find ./ -name "*.m" -exec iconv {} -f gbk -t utf8 -o {} \; -print
+iconv -f GBK -t UTF-8 errorbare.m -o errorbare.m

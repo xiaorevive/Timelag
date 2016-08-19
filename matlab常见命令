@@ -1,0 +1,602 @@
+set(gcf,'Units','centimeters','Position',[10 10 20 18]);
+set(gca,'yticklabel',sprintf('%5f|',get(gca,'ytick')));
+fitsread(strcat(['./aux_rex/'],H1_std{1}),'binarytable');
+%%*************************************************************************
+ str={'welcome';'beijing';'friend'};
+ h=axes('Position',[0.1 0.1 0.9 0.9]);
+ h1=axes('Position',[0.23 0.15 0.9 0.9]);
+ axes('Position',[.35 .35 .7 .9]);               %创建两个坐标轴
+ text(.025,.6,str(1),'FontSize',11);             %在当前（第二个）坐标轴上标注
+ set(gcf,'CurrentAxes',h)                        %返回到第一个坐标轴的控制
+ text(.025,.6,str(2),'FontSize',11);             %在第一个坐标轴上标注
+ set(gcf,'CurrentAxes',h1) 
+ text(.025,.6,str(3),'FontSize',11);
+
+
+%%*************************************************************************
+set(gcf,'Units','centimeters','Position',[10 10 7 5]);   %设置图片大小
+   
+1、坐标轴删除
+
+set(gca,'xtick'，[]）%去掉x轴的刻度
+
+set(gca,'ytick'，[]) %去掉xy轴的刻度
+
+set(gca,'xtick',[],'ytick',[]) %同时去掉x轴和y轴的刻度
+
+2、Matlab中“坐标轴刻度”的不同风格 
+
+x=1:8;
+
+subplot(2,2,1)
+plot(x)
+%tick style 0(auto)
+
+
+subplot(2,2,2)
+plot(x)
+set(gca,'xtick',[1 3 6 8]);%style 1
+set(gca,'ytick',[]);%style 2
+
+subplot(2,2,3)
+plot(x)
+set(gca,'xtick',[1 3 6 8]);
+set(gca,'xticklabel',sprintf('.4f|',get(gca,'xtick')));%style 3
+set(gca,'ytick',[2 4 5 7]);
+set(gca,'yticklabel',{'Two','Four','Five','Seven'});%style 4
+
+subplot(2,2,4)
+plot(x)
+set(gca,'xminortick','on');%style 5
+set(gca,'ticklength',[0.05 0.025]);%style 6
+set(gca,'tickdir','out');%style 7
+
+另附Maltab坐标调整程序一段：
+
+x=20:10:20000;
+y=rand(size(x));
+semilogx(x,y);
+set(gca,'XLim',[20 20000]);
+set(gca,'XMinorTick','off');
+set(gca,'XTick',[20 31.5 63 125 250 500 1000 2000 4000 8000 16000]);
+set(gca,'XGrid','on');
+set(gca,'XMinorGrid','off');
+
+ 
+
+3、matlab坐标刻度调整
+
+subplot(3,2,1)
+
+plot(x)
+
+title('默认格式')
+
+subplot(3,2,2)
+
+plot(x)
+
+set(gca,'xtick',[1 3 6 8]);
+
+set(gca,'ytick',[]);
+
+title('X自定义间隔，Y关闭')
+
+subplot(3,2,3)
+
+plot(x)
+
+set(gca,'xtick',[1 3 6 8]);
+
+set(gca,'xticklabel',sprintf('%.4f|',get(gca,'xtick')))
+
+set(gca,'ytick',[2 4 5 7]);
+
+set(gca,'yticklabel',{'Two','Four','Five','Seven'});
+
+title('XY自定义间隔、精度及显示方式')
+
+subplot(3,2,4)
+
+plot(x)
+
+set(gca,'xminortick','on');%style 5
+
+set(gca,'ticklength',[0.05 0.025]);
+
+set(gca,'tickdir','out');
+
+title('XY坐标刻度显示方式')
+
+subplot(3,2,5)
+
+plot(x)
+
+set(gca,'xtick',[min(x) (max(x)+min(x))/2 max(x)]);
+
+set(gca,'ytick',[min(x) (max(x)+min(x))/2 max(x)]);
+
+title('论文中常用的标准3点式显示')
+
+x=20:10:20000;
+
+y=rand(size(x));
+
+subplot(3,2,6)
+
+semilogx(x,y);
+
+set(gca,'XLim',[20 20000]);
+
+set(gca,'XMinorTick','off');
+
+set(gca,'XTick',[20 31.5 63 125 250 500 1000 2000 4000 8000 16000]);
+
+set(gca,'XGrid','on');
+
+set(gca,'XMinorGrid','off');
+
+title('自定义网格显示')
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+%顺便附上可以格式化坐标刻度的程序段
+
+x=get(gca,'xlim');
+
+y=get(gca,'ylim');
+
+set(gca,'xtick',[x(1) (x(1)+x(2))/2 x(2)]);
+
+set(gca,'ytick',[y(1) (y(1)+y(2))/2 y(2)]);
+
+－－－－－－－－－－－－－
+
+get(gca,'xlim');是获取最大最小刻度的
+
+如果需要获取所有在坐标轴上显示的刻度，需要使用get(gca,'ytick')
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%*****fprintf 函数只能写成横向量来打印，把数据一行一行叠加！！！！＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+% [ QPO_Phi,QPO_Phi_error ] = xtepipeline
+% errorbar(QPO_Phi,QPO_Phi_error);
+% 
+% fid=fopen('QPO_phase','w');
+% for i=1:length(QPO_Phi)
+%     fprintf(fid,'%.8f ',QPO_Phi(i));
+%     fprintf(fid,'%.8f\n',QPO_Phi_error(i));
+% end
+% fclose(fid);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function createfigure(VertexNormals1, YData1, XData1, Vertices1, Faces1, XData2, Vertices2, VertexNormals2, XData3, Vertices3, VertexNormals3, XData4, Vertices4, VertexNormals4, XData5, Vertices5, X1, Y1, X2, Y2, X3, YMatrix1, X4, X5, X6, X7, X8, X9, YMatrix2, X10, VertexNormals5, YData2, Vertices6, Vertices7, VertexNormals6, Vertices8, VertexNormals7, Vertices9, VertexNormals8, Vertices10, Y3, X11, Y4, YMatrix3, YMatrix4, VertexNormals9, YData3, Vertices11, Vertices12, VertexNormals10, Vertices13, VertexNormals11, Vertices14, VertexNormals12, Vertices15, Y5, X12, Y6, YMatrix5, YMatrix6)
+%CREATEFIGURE(VERTEXNORMALS1, YDATA1, XDATA1, VERTICES1, FACES1, XDATA2, VERTICES2, VERTEXNORMALS2, XDATA3, VERTICES3, VERTEXNORMALS3, XDATA4, VERTICES4, VERTEXNORMALS4, XDATA5, VERTICES5, X1, Y1, X2, Y2, X3, YMATRIX1, X4, X5, X6, X7, X8, X9, YMATRIX2, X10, VERTEXNORMALS5, YDATA2, VERTICES6, VERTICES7, VERTEXNORMALS6, VERTICES8, VERTEXNORMALS7, VERTICES9, VERTEXNORMALS8, VERTICES10, Y3, X11, Y4, YMATRIX3, YMATRIX4, VERTEXNORMALS9, YDATA3, VERTICES11, VERTICES12, VERTEXNORMALS10, VERTICES13, VERTEXNORMALS11, VERTICES14, VERTEXNORMALS12, VERTICES15, Y5, X12, Y6, YMATRIX5, YMATRIX6)
+%  VERTEXNORMALS1:  patch vertexnormals
+%  YDATA1:  patch ydata
+%  XDATA1:  patch xdata
+%  VERTICES1:  patch vertices
+%  FACES1:  patch faces
+%  XDATA2:  patch xdata
+%  VERTICES2:  patch vertices
+%  VERTEXNORMALS2:  patch vertexnormals
+%  XDATA3:  patch xdata
+%  VERTICES3:  patch vertices
+%  VERTEXNORMALS3:  patch vertexnormals
+%  XDATA4:  patch xdata
+%  VERTICES4:  patch vertices
+%  VERTEXNORMALS4:  patch vertexnormals
+%  XDATA5:  patch xdata
+%  VERTICES5:  patch vertices
+%  X1:  vector of x data
+%  Y1:  vector of y data
+%  X2:  vector of x data
+%  Y2:  vector of y data
+%  X3:  vector of x data
+%  YMATRIX1:  matrix of y data
+%  X4:  vector of x data
+%  X5:  vector of x data
+%  X6:  vector of x data
+%  X7:  vector of x data
+%  X8:  vector of x data
+%  X9:  vector of x data
+%  YMATRIX2:  matrix of y data
+%  X10:  vector of x data
+%  VERTEXNORMALS5:  patch vertexnormals
+%  YDATA2:  patch ydata
+%  VERTICES6:  patch vertices
+%  VERTICES7:  patch vertices
+%  VERTEXNORMALS6:  patch vertexnormals
+%  VERTICES8:  patch vertices
+%  VERTEXNORMALS7:  patch vertexnormals
+%  VERTICES9:  patch vertices
+%  VERTEXNORMALS8:  patch vertexnormals
+%  VERTICES10:  patch vertices
+%  Y3:  vector of y data
+%  X11:  vector of x data
+%  Y4:  vector of y data
+%  YMATRIX3:  matrix of y data
+%  YMATRIX4:  matrix of y data
+%  VERTEXNORMALS9:  patch vertexnormals
+%  YDATA3:  patch ydata
+%  VERTICES11:  patch vertices
+%  VERTICES12:  patch vertices
+%  VERTEXNORMALS10:  patch vertexnormals
+%  VERTICES13:  patch vertices
+%  VERTEXNORMALS11:  patch vertexnormals
+%  VERTICES14:  patch vertices
+%  VERTEXNORMALS12:  patch vertexnormals
+%  VERTICES15:  patch vertices
+%  Y5:  vector of y data
+%  X12:  vector of x data
+%  Y6:  vector of y data
+%  YMATRIX5:  matrix of y data
+%  YMATRIX6:  matrix of y data
+
+%  Auto-generated by MATLAB on 23-Jan-2016 16:45:20
+
+% Create figure
+figure1 = figure('Color',[1 1 1]);
+
+% Create axes
+axes1 = axes('Parent',figure1,'XTickLabel',{''},...
+    'Position',[0.06 0.64 0.9 0.27]);
+%% Uncomment the following line to preserve the X-limits of the axes
+% xlim(axes1,[52150 52270]);
+%% Uncomment the following line to preserve the Y-limits of the axes
+% ylim(axes1,[0 1]);
+box(axes1,'on');
+hold(axes1,'all');
+
+% Create patch
+patch('Parent',axes1,'VertexNormals',VertexNormals1,'YData',YData1,...
+    'XData',XData1,...
+    'Vertices',Vertices1,...
+    'Faces',Faces1,...
+    'FaceColor',[0.73 0.83 0.96]);
+
+% Create patch
+patch('Parent',axes1,'VertexNormals',VertexNormals1,'YData',YData1,...
+    'XData',XData2,...
+    'Vertices',Vertices2,...
+    'Faces',Faces1,...
+    'FaceColor',[0.95 0.87 0.73]);
+
+% Create patch
+patch('Parent',axes1,'VertexNormals',VertexNormals2,'YData',YData1,...
+    'XData',XData3,...
+    'Vertices',Vertices3,...
+    'Faces',Faces1,...
+    'FaceColor',[0.76 0.87 0.78]);
+
+% Create patch
+patch('Parent',axes1,'VertexNormals',VertexNormals3,'YData',YData1,...
+    'XData',XData4,...
+    'Vertices',Vertices4,...
+    'Faces',Faces1,...
+    'FaceColor',[0.93 0.84 0.84]);
+
+% Create patch
+patch('Parent',axes1,'VertexNormals',VertexNormals4,'YData',YData1,...
+    'XData',XData5,...
+    'Vertices',Vertices5,...
+    'Faces',Faces1,...
+    'FaceColor',[0.73 0.83 0.96]);
+
+% Create plot
+plot(X1,Y1,'Parent',axes1,'MarkerSize',3,'Marker','square','LineWidth',1,...
+    'LineStyle','none',...
+    'Color',[0 0 1]);
+
+% Create plot
+plot(X2,Y2,'Parent',axes1,'MarkerSize',3,'LineWidth',1,'Color',[0 0 1]);
+
+% Create ylabel
+ylabel('Coherence','Interpreter','latex','FontSize',14,...
+    'FontName','L M Roman Caps10');
+
+% Create multiple lines using matrix input to plot
+plot(X3,YMatrix1,'Parent',axes1,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X4,YMatrix1,'Parent',axes1,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X5,YMatrix1,'Parent',axes1,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X6,YMatrix1,'Parent',axes1,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X7,YMatrix1,'Parent',axes1,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X8,YMatrix1,'Parent',axes1,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X9,YMatrix2,'Parent',axes1,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X10,YMatrix2,'Parent',axes1,'Color',[0 0 0]);
+
+% Create axes
+axes2 = axes('Parent',figure1,...
+    'YTickLabel',['-3';'-2';'-1';'0 ';'1 ';'2 ';'  '],...
+    'XTickLabel',{''},...
+    'Position',[0.06 0.37 0.9 0.27]);
+%% Uncomment the following line to preserve the X-limits of the axes
+% xlim(axes2,[52150 52270]);
+%% Uncomment the following line to preserve the Y-limits of the axes
+% ylim(axes2,[-3.14159265358979 3.14159265358979]);
+box(axes2,'on');
+hold(axes2,'all');
+
+% Create patch
+patch('Parent',axes2,'VertexNormals',VertexNormals5,'YData',YData2,...
+    'XData',XData1,...
+    'Vertices',Vertices6,...
+    'Faces',Faces1,...
+    'FaceColor',[0.73 0.83 0.96]);
+
+% Create patch
+patch('Parent',axes2,'VertexNormals',VertexNormals5,'YData',YData2,...
+    'XData',XData2,...
+    'Vertices',Vertices7,...
+    'Faces',Faces1,...
+    'FaceColor',[0.95 0.87 0.73]);
+
+% Create patch
+patch('Parent',axes2,'VertexNormals',VertexNormals6,'YData',YData2,...
+    'XData',XData3,...
+    'Vertices',Vertices8,...
+    'Faces',Faces1,...
+    'FaceColor',[0.76 0.87 0.78]);
+
+% Create patch
+patch('Parent',axes2,'VertexNormals',VertexNormals7,'YData',YData2,...
+    'XData',XData4,...
+    'Vertices',Vertices9,...
+    'Faces',Faces1,...
+    'FaceColor',[0.93 0.84 0.84]);
+
+% Create patch
+patch('Parent',axes2,'VertexNormals',VertexNormals8,'YData',YData2,...
+    'XData',XData5,...
+    'Vertices',Vertices10,...
+    'Faces',Faces1,...
+    'FaceColor',[0.73 0.83 0.96]);
+
+% Create plot
+plot(X1,Y3,'Parent',axes2,'MarkerSize',15,'Marker','.','LineWidth',1,...
+    'LineStyle','none',...
+    'Color',[0 0 1]);
+
+% Create plot
+plot(X11,Y4,'Parent',axes2,'MarkerSize',15,'LineWidth',1,'Color',[0 0 1]);
+
+% Create ylabel
+ylabel('Phase Lag (rad)','Interpreter','latex','FontSize',14,...
+    'FontName','L M Roman Caps10');
+
+% Create multiple lines using matrix input to plot
+plot(X3,YMatrix3,'Parent',axes2,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X4,YMatrix3,'Parent',axes2,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X5,YMatrix3,'Parent',axes2,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X6,YMatrix3,'Parent',axes2,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X7,YMatrix3,'Parent',axes2,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X8,YMatrix3,'Parent',axes2,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X9,YMatrix4,'Parent',axes2,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X10,YMatrix4,'Parent',axes2,'Color',[0 0 0]);
+
+% Create axes
+axes3 = axes('Parent',figure1,...
+    'XTickLabel',['52160';'52180';'52200';'52220';'52240';'52260';'     '],...
+    'Position',[0.06 0.1 0.9 0.27]);
+%% Uncomment the following line to preserve the X-limits of the axes
+% xlim(axes3,[52150 52270]);
+%% Uncomment the following line to preserve the Y-limits of the axes
+% ylim(axes3,[-0.45 0.45]);
+box(axes3,'on');
+hold(axes3,'all');
+
+% Create patch
+patch('Parent',axes3,'VertexNormals',VertexNormals9,'YData',YData3,...
+    'XData',XData1,...
+    'Vertices',Vertices11,...
+    'Faces',Faces1,...
+    'FaceColor',[0.73 0.83 0.96]);
+
+% Create patch
+patch('Parent',axes3,'VertexNormals',VertexNormals9,'YData',YData3,...
+    'XData',XData2,...
+    'Vertices',Vertices12,...
+    'Faces',Faces1,...
+    'FaceColor',[0.95 0.87 0.73]);
+
+% Create patch
+patch('Parent',axes3,'VertexNormals',VertexNormals10,'YData',YData3,...
+    'XData',XData3,...
+    'Vertices',Vertices13,...
+    'Faces',Faces1,...
+    'FaceColor',[0.76 0.87 0.78]);
+
+% Create patch
+patch('Parent',axes3,'VertexNormals',VertexNormals11,'YData',YData3,...
+    'XData',XData4,...
+    'Vertices',Vertices14,...
+    'Faces',Faces1,...
+    'FaceColor',[0.93 0.84 0.84]);
+
+% Create patch
+patch('Parent',axes3,'VertexNormals',VertexNormals12,'YData',YData3,...
+    'XData',XData5,...
+    'Vertices',Vertices15,...
+    'Faces',Faces1,...
+    'FaceColor',[0.73 0.83 0.96]);
+
+% Create plot
+plot(X1,Y5,'Parent',axes3,'MarkerSize',15,'Marker','.','LineWidth',1,...
+    'LineStyle','none',...
+    'Color',[0 0 1]);
+
+% Create plot
+plot(X12,Y6,'Parent',axes3,'MarkerSize',15,'LineWidth',1,'Color',[0 0 1]);
+
+% Create ylabel
+ylabel('Time Lag (s)','Interpreter','latex','FontSize',14,...
+    'FontName','L M Roman Caps10');
+
+% Create xlabel
+xlabel('Time (MJD)','Interpreter','latex','FontSize',14,...
+    'FontName','L M Roman Caps10');
+
+% Create multiple lines using matrix input to plot
+plot(X3,YMatrix5,'Parent',axes3,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X4,YMatrix5,'Parent',axes3,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X5,YMatrix5,'Parent',axes3,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X6,YMatrix5,'Parent',axes3,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X7,YMatrix5,'Parent',axes3,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X8,YMatrix5,'Parent',axes3,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X9,YMatrix6,'Parent',axes3,'Color',[0 0 0]);
+
+% Create multiple lines using matrix input to plot
+plot(X10,YMatrix6,'Parent',axes3,'Color',[0 0 0]);
+
+% Create textbox
+annotation(figure1,'textbox',...
+    [0.499009259259253 0.91322203672788 0.0510833333333333 0.0317195325542571],...
+    'Interpreter','latex',...
+    'String',{'IV'},...
+    'FontSize',14,...
+    'FitBoxToText','off',...
+    'LineStyle','none');
+
+% Create textbox
+annotation(figure1,'textbox',...
+    [0.804888888888882 0.911585976627713 0.0510833333333333 0.0317195325542571],...
+    'Interpreter','latex',...
+    'String',{'V'},...
+    'FontSize',14,...
+    'FitBoxToText','off',...
+    'LineStyle','none');
+
+% Create textbox
+annotation(figure1,'textbox',...
+    [0.274148148148148 0.914858096828047 0.0510833333333333 0.0317195325542571],...
+    'Interpreter','latex',...
+    'String',{'III'},...
+    'FontSize',14,...
+    'FontName','L M Roman Caps10',...
+    'FitBoxToText','off',...
+    'LineStyle','none');
+
+% Create textbox
+annotation(figure1,'textbox',...
+    [0.174721189591078 0.906510851419032 0.028810408921933 0.0383973288814691],...
+    'Interpreter','latex',...
+    'String',{'II'},...
+    'FontSize',14,...
+    'FontName','L M Roman Caps10',...
+    'FitBoxToText','off',...
+    'LineStyle','none');
+
+% Create textbox
+annotation(figure1,'textbox',...
+    [0.0895591887898615 0.914858096828047 0.0154593985707333 0.0317195325542571],...
+    'Interpreter','latex',...
+    'String',{'I'},...
+    'FontSize',14,...
+    'FontName','L M Roman Caps10',...
+    'FitBoxToText','off',...
+    'LineStyle','none');
+
+cftool
+
+
+
+ matlab双y轴添加误差棒（转载） [此博文包含图片] (2013-05-22 23:39:56)
+转载
+▼
+	
+
+转载：http://blog.csdn.net/fanfan_821/article/details/6393488
+
+ matlab的双y轴网上有很多方法，但是带置信区间的双y轴就很少了，并且由于网上给的例子一般都是使用红蓝两色，对于只想使用黑色或者灰色的俺们来说太鲜艳啦~
+
+      
+
+        上图为使用matlab绘制的双y轴带置信区间的曲线。其中黑色的那条是根据左边y轴绘制的，灰色曲线是根据右边y轴绘制。matlab程序如下：
+
+ 
+
+[AX,H1,H2] = plotyy(x,y2,x,z1,@(x,y2)errorbar(x,y2,l2,u2,'k-^','linewidth',2),@(x,z1)errorbar(x,z1,l3,u3,'color',[138 138 138]/255,'linestyle','-','marker','o','linewidth',2));
+
+%plotyy是双y轴的函数，x为两条曲线的公共x轴坐标，y2为以左侧y轴的y轴坐标，z1以右侧y轴的坐标；
+
+%errorbar为绘制置信区间的函数，内容包括x轴，y轴坐标，取值下限及上限，后面为设置线型及线宽，常用的线型很容易更改。若想修改线的颜色为其他类型，必须将这几种属性分开，例如颜色用‘color’，线型‘linestyle’。点的类型函数‘marker’。（一般网上介绍中都是用‘markerstyle’，但是这个属性在我的matlab版本中总是报错，找了半天才找到‘marker’）；
+
+
+set(get(AX(1),'Ylabel'),'string','B','fontweight','bold','FontSize',13);
+
+%设置左侧y轴的字体大小，粗体类型；
+set(get(AX(2),'Ylabel'),'string','C','fontweight','bold','FontSize',13);
+
+%设置右侧y轴的字体大小，粗体类型；
+
+ 
+
+set(AX(1),'YLim',[0,750],'fontweight','bold','FontSize',13);
+
+%设置左侧y轴的取值范围，事实证明，即使后面设置了取值间隔及范围，设置YLim也不能省略；
+set(AX(2),'YLim',[-20,80],'fontweight','bold','FontSize',13);
+
+ 
+
+set(AX(1),'YTick',[0:150:750]);
+
+%设置左侧y轴的取值间隔及范围；
+set(AX(2),'YTick',[-20:20:80]);
+
+ 
+
+set(AX(1),'Ycolor','k')
+
+%设置左侧y轴的颜色；
+set(AX(2),'Ycolor',[138 138 138]/255)
+%设置右侧y轴的颜色——灰色；
+%不知道上述几个属性的设置能否合成一个？
+
+ 
+
+xlabel('A','fontweight','bold','FontSize',13)
+legend([H1,H2],{'B','C'},'fontweight','bold','FontSize',13)
+%设置双y轴的legend
+
